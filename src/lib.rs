@@ -30,7 +30,7 @@ compile_error!(
 );
 
 #[cfg(feature = "use_std")]
-use std::io::{Read as TokioAsyncRead, Write as TokioAsyncWrite};
+use std::io::{Read as AsyncRead, Write as AsyncWrite};
 
 #[cfg(feature = "use_tokio")]
 use tokio::io::{AsyncRead as TokioAsyncRead, AsyncReadExt, AsyncWrite as TokioAsyncWrite, AsyncWriteExt};
@@ -62,7 +62,7 @@ pub struct Endpoint<S> {
     router_version: RouterVersion,
 }
 
-impl<S: TokioAsyncWrite + TokioAsyncRead + Unpin> Endpoint<S> {
+impl<S: AsyncWrite + AsyncRead + Unpin> Endpoint<S> {
     #[maybe_async]
     pub async fn attach(socket: S) -> Self {
         // Assume router is of last known version
@@ -184,7 +184,7 @@ mod protocol {
     ///   - response is strictly formatted (pretty or compact format).
     ///   - `reader` doesn't yield anything besides a single json object.
     #[maybe_async]
-    pub async fn read_response<'a, R: TokioAsyncRead + Unpin>(
+    pub async fn read_response<'a, R: AsyncRead + Unpin>(
         reader: &mut R,
         scratch: &'a mut Vec<u8>,
     ) -> io::Result<&'a [u8]> {
