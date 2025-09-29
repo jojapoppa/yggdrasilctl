@@ -33,7 +33,7 @@ compile_error!(
 use std::io::{Read as AsyncRead, Write as AsyncWrite};
 
 #[cfg(feature = "use_tokio")]
-use tokio::io::{AsyncRead as TokioAsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
+use tokio::io::{AsyncRead as TokioAsyncRead, AsyncReadExt, AsyncWrite as TokioAsyncWrite, AsyncWriteExt};
 
 #[cfg(feature = "use_futures")]
 use futures::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
