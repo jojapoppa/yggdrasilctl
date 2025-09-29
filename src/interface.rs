@@ -99,7 +99,6 @@ pub struct ListEntry {
 #[derive(Debug, Serialize, Deserialize)]
 #[cfg_attr(test, serde(deny_unknown_fields))]
 pub struct Empty {}
-
 impl<S: AsyncWrite + AsyncRead + Unpin> Endpoint<S> {
     #[maybe_async]
     pub async fn get_peers(&mut self) -> RequestResult<Vec<PeerEntry>> {
