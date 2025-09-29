@@ -30,13 +30,13 @@ compile_error!(
 );
 
 #[cfg(feature = "use_std")]
-use std::io::{Read as AsyncRead, Write as AsyncWrite};
+use std::io::{Read as TokioAsyncRead, Write as TokioAsyncWrite};
 
 #[cfg(feature = "use_tokio")]
 use tokio::io::{AsyncRead as TokioAsyncRead, AsyncReadExt, AsyncWrite as TokioAsyncWrite, AsyncWriteExt};
 
 #[cfg(feature = "use_futures")]
-use futures::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
+use futures::io::{TokioAsyncRead, AsyncReadExt, TokioAsyncWrite, AsyncWriteExt};
 
 use {
     maybe_async::maybe_async,
@@ -62,7 +62,7 @@ pub struct Endpoint<S> {
     router_version: RouterVersion,
 }
 
-impl<S: AsyncWrite + AsyncRead + Unpin> Endpoint<S> {
+impl<S: TokioAsyncWrite + TokioAsyncRead + Unpin> Endpoint<S> {
     #[maybe_async]
     pub async fn attach(socket: S) -> Self {
         // Assume router is of last known version
@@ -184,7 +184,7 @@ mod protocol {
     ///   - response is strictly formatted (pretty or compact format).
     ///   - `reader` doesn't yield anything besides a single json object.
     #[maybe_async]
-    pub async fn read_response<'a, R: AsyncRead + Unpin>(
+    pub async fn read_response<'a, R: TokioAsyncRead + Unpin>(
         reader: &mut R,
         scratch: &'a mut Vec<u8>,
     ) -> io::Result<&'a [u8]> {
@@ -364,7 +364,7 @@ mod tests_live {
     }
 
     #[maybe_async]
-    async fn request<S: AsyncWrite + AsyncRead + Unpin>(e: S) {
+    async fn request<S: TokioAsyncWrite + TokioAsyncRead + Unpin>(e: S) {
         let mut e = Endpoint::attach(e).await;
 
         if let RouterVersion::v0_4_5__v0_4_7 = e.get_version() {
