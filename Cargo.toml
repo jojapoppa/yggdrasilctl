@@ -11,7 +11,7 @@ repository = "https://github.com/one-d-wide/yggdrasilctl"
 resolver = "2" # Disallow feature unification
 
 [features]
-# Take `Write` and `Read` traits from `std` crate
+# Take `Write` and `Read` trait from `std` crate
 use_std = [ "dep:maybe-async", "maybe-async?/is_sync" ]
 # Take `AsyncWrite` and `AsyncRead` traits from `tokio` crate
 use_tokio = [ "dep:maybe-async", "dep:tokio" ]
