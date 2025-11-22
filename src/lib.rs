@@ -35,7 +35,6 @@ use std::io::{Read as AsyncRead, Write as AsyncWrite};
 #[cfg(feature = "use_tokio")]
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
-
 #[cfg(feature = "use_futures")]
 use futures::io::{TokioAsyncRead, AsyncReadExt, TokioAsyncWrite, AsyncWriteExt};
 
